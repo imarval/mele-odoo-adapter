@@ -380,12 +380,4 @@ await handler.handle_retry_failed_events()
 5. Crear Pull Request
 
 ## Licencia
-
-[Especificar licencia]
-
-## Soporte
-
-Para soporte técnico, contactar:
-- Email: [support@example.com]
-- Issues: [GitHub Issues URL]
-- Documentación: [Docs URL]
+MIT License - ver archivo [LICENSE](LICENSE) para detalles.

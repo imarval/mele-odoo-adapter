@@ -1,0 +1,86 @@
+# Configuración del adaptador de integración Odoo
+# Este archivo puede ser sobrescrito por variables de entorno
+
+# Configuración de conexión a Odoo
+odoo:
+  url: "http://localhost:8069"
+  database: "odoo_db"
+  username: "admin"
+  password: "admin"
+
+# Configuración de cliente SignalR
+signalr:
+  enabled: true
+  url: "http://localhost:5000/hubs/outbound-events"
+  subscription_id: "your_subscription_id"
+  auto_reconnect: true
+  reconnect_interval: 5
+  max_reconnect_attempts: 10
+
+# Configuración de servidor webhook
+webhook:
+  enabled: true
+  host: "0.0.0.0"
+  port: 8000
+  path: "/webhook/events"
+
+# Configuración de base de datos local
+database:
+  path: "integration_events.db"
+  cleanup_days: 30  # Días después de los cuales limpiar eventos procesados
+
+# Configuración de logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: null  # Dejar null para logging solo en consola, o especificar archivo
+  max_file_size: "10MB"
+  backup_count: 5
+
+# Configuración de sincronización
+sync:
+  batch_size: 100
+  retry_attempts: 3
+  retry_delay: 5  # segundos
+  max_concurrent_events: 10
+  process_pending_on_startup: true
+
+# Configuración de mapeo de entidades
+entity_mappings:
+  Product:
+    odoo_model: "product.template"
+    key_field: "default_code"
+    sync_enabled: true
+    create_missing: true
+  
+  User:
+    odoo_model: "res.users" 
+    key_field: "login"
+    sync_enabled: true
+    create_missing: true
+  
+  Store:
+    odoo_model: "res.company"
+    key_field: "vat"
+    sync_enabled: true
+    create_missing: true
+  
+  Invoice:
+    odoo_model: "account.move"
+    key_field: "name"
+    sync_enabled: false  # Solo lectura por defecto
+    create_missing: false
+
+# Configuración de monitoreo y salud
+monitoring:
+  health_check_interval: 60  # segundos
+  metrics_enabled: true
+  status_endpoint: "/status"
+
+# Configuración de seguridad
+security:
+  webhook_secret: null  # Token secreto para validar webhooks
+  allowed_hosts: []  # Lista de hosts permitidos para webhooks
+  rate_limit:
+    requests_per_minute: 60
+    burst_size: 10
